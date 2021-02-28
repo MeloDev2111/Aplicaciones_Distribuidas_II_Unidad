@@ -11,36 +11,68 @@
         <title>@yield('titulo')</title>
     </head>
 <body>
-    <div class="navbar navbar-dark bg-dark justify-content-center">
-        <div class="row m-1">
-            <a href="/" class="navbar-brand col fs-1">
-                Inicio |
+    <nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand text-white" href="{{ url('/') }}">
+                Inicio|
             </a>
-            @guest
-            <a href="{{ route('login') }}" class="navbar-brand col fs-1">
-                Login
-            </a>
-            @else
-                <a href="/acerca" class="navbar-brand col fs-1">
-                    Acerca
-                </a>
-                <a href="/proyectos" class="navbar-brand col fs-1">
-                    Portafolio
-                </a>
-                <a href="/contactos" class="navbar-brand col fs-1">
-                    Contactos
-                </a>
-                <a href="#" class="navbar-brand col fs-1" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
-                    Cerrar Sesion</a>
-            @endguest
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                @csrf
-            </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-nav mr-auto">
+                    @guest
+                    @else
+                        <a href="/acerca" class="navbar-brand col fs-1 text-white">
+                            Acerca
+                        </a>
+                    @endguest
+                </ul>
 
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+
+
+                    @guest
+                        <li class="nav-item">
+                            <a class="navbar-brand col fs-1 text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+
+                    @else
+                        <li class="nav-item">
+                            <a href="/proyectos" class="navbar-brand col fs-1 text-white">
+                                Portafolio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/contactos" class="navbar-brand col fs-1 text-white">
+                                Contactos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="navbar-brand col fs-1 text-white">
+                                Registrar
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="navbar-brand col fs-1 text-white" onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">
+                                Cerrar Sesion</a>
+                        </li>
+                    @endguest
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
+
 
     @yield('contenido')
     <!-- Optional JavaScript -->

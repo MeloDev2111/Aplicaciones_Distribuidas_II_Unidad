@@ -1,3 +1,6 @@
+@guest
+@else
+
 @extends('layout')
 
 @section('titulo')
@@ -108,3 +111,4 @@
 
 
 @endsection
+@endguest

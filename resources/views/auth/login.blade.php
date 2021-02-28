@@ -8,7 +8,7 @@
     }
 </style>
 @section('content')
-<div class="container ">
+<div class="container">
     <div class="row justify-content-center ">
         <div class="col-md-8 ">
             <div class="card">
@@ -71,24 +71,6 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="row text-center pb-3">
-                            <a href="https://github.com/MeloDev2111/" class="col" target="_blank" >
-                                <img src="../docs/images/GitHub-Mark-Light-64px.png" title="Repositorio GitHub - repo privado"
-                                alt="GitHub icon" height= 60px>
-                            </a>
-
-                            <a href="https://appsdistribuidas-i-unidad.herokuapp.com/" class="col" target="_blank">
-                                <img src="../docs/images/heroku_icon.png" title="Deploy con Heroku"
-                                alt="Heroku icon" height= 60px>
-                            </a>
-
-                            <a href="https://unsanta-my.sharepoint.com/:f:/g/personal/201814005_uns_edu_pe/EtkcIN2kws5HhedCo7hOYW4BUfICy2P2zzzf2ZTZlio8Fg?e=5lfmpv"
-                            class="col" target="_blank">
-                                <img src="../docs/images/microsoft_onedrive_icon.png" title="Repositorio OneDrive"
-                                alt="One Drive icon" height= 60px>
-                            </a>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -96,3 +78,4 @@
     </div>
 </div>
 @endsection
+@extends('footer')

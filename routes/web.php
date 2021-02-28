@@ -93,7 +93,16 @@ Route::delete();
         return view('portafolio', compact('portafolio'));
 */
 //Route::view('/home','inicio')->name('Home');
-Auth::routes(['register'=>false]);
+//Auth::routes(['register'=>false]);
+Auth::routes();
+/*
 
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+
+*/
 //Route::get('/home', 'HomeController@index')->name('home');
 
