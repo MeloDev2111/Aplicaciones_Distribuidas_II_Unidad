@@ -74,9 +74,11 @@ Route::view('/contactos','contactos')->name('Contactos');
 //Route::resource('proyectos','PortafolioController')->only(['index','show']);
 //Except es el inverso de only
 //Route::resource('proyectos','PortafolioController');
-
 Route::apiResource('proyectos','PortafolioController');
 
+Route::resource('empleados', 'EmpleadosController');
+
+Route::resource('oficinas', 'OficinasController');
 /*
 Route::post();
 Route::put();
