@@ -14,7 +14,7 @@ class OficinasController extends Controller
      */
     public function index()
     {
-        $datos['oficinas']=Oficinas::paginate(10);
+        $datos['oficinas']=Oficinas::paginate();
         return view('oficinas.index',$datos);
     }
 

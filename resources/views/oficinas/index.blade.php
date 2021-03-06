@@ -23,7 +23,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($oficinas as $item)
+                    @forelse ($oficinas as $item)
                         <tr>
                             <td>{{$item -> id}}</td>
                             <td>{{$item -> nombre}}</td>
@@ -37,7 +37,9 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        NO HAY OFICINAS REGISTRADAS
+                    @endforelse
                 </tbody>
             </table>
         </div>

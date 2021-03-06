@@ -17,6 +17,22 @@
             </h2>
 
 
+            <div class="form-group row">
+                <label for="Oficina" class="col-md-4 col-form-label text-md-right">{{ __('Oficina') }}</label>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger dropdown-toggle col-md-6" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Oficina
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </div>
+            </div>
 
             <h2 class="form-group">
                 <span>DNI:</span>
