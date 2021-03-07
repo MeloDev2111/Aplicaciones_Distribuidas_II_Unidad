@@ -43,7 +43,8 @@ class PortafolioController extends Controller
      */
     public function show($id)
     {
-        //
+        echo "hola";
+        echo $id;
     }
 
     /**

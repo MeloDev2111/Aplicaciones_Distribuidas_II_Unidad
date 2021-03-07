@@ -68,8 +68,6 @@ Route::view('/acerca','acerca')->name('Acerca');
 
 Route::get('/portafolio','PortafolioController@index')->name('Portafolio');
 
-Route::view('/expedientes','expedientes.index')->name('Expedientes');
-
 Route::view('/contactos','contactos')->name('Contactos');
 
 //Route::resource('proyectos','PortafolioController')->only(['index','show']);
@@ -77,9 +75,14 @@ Route::view('/contactos','contactos')->name('Contactos');
 //Route::resource('proyectos','PortafolioController');
 Route::apiResource('proyectos','PortafolioController');
 
+Route::resource('oficinas', 'OficinasController')->middleware(['auth']);
+
 Route::resource('empleados', 'EmpleadosController');
 
-Route::resource('oficinas', 'OficinasController')->middleware(['auth']);
+Route::resource('expedientes', 'ExpedientesController');
+Route::get('expedientes/crear/{empleado_id}', 'ExpedientesController@create');
+Route::get('expedientes/{empleado_id}/{estado}', 'ExpedientesController@show');
+Route::post('expedientes/consultar/', 'ExpedientesController@consultar');
 /*
 Route::post();
 Route::put();
