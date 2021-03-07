@@ -47,11 +47,24 @@
                                 Portafolio
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a href="/contactos" class="navbar-brand col fs-1 text-white">
-                                Contactos
+                            <a href="/oficinas" class="navbar-brand col fs-1 text-white">
+                                Oficinas
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/empleados" class="navbar-brand col fs-1 text-white">
+                                Empleados
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="/expedientes" class="navbar-brand col fs-1 text-white">
+                                Expedientes
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="{{ route('register') }}" class="navbar-brand col fs-1 text-white">
                                 Registrar

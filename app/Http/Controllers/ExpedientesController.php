@@ -71,20 +71,31 @@ class ExpedientesController extends Controller
         }
 
         switch ($estado) {
-            case 'ENVIADOS':
+            case '1':
                 $datos['expedientes']=Expedientes::where('idOficinaEmisora','=',$oficinaActual['id'])
                 ->whereNull('atencion')->paginate("10");
+
+                $datos['configFiltro'] = "ENVIADOS";
                 break;
-            case 'RECIBIDOS':
+            case '2':
                 $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
                 ->whereNull('atencion')->paginate("10");
+
+
+                $datos['configFiltro'] = "RECIBIDOS";
                 break;
-            case 'ATENDIDOS':
+            case '3':
                 $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
-                ->orWhere('idOficinaEmisora','=',$oficinaActual['id'])->paginate("10");
+                ->orWhere('idOficinaEmisora','=',$oficinaActual['id'])
+                ->whereNotNull('atencion')
+                ->paginate("10");
+
+                $datos['configFiltro'] = "ATENDIDOS";
                 break;
             default:
                 $datos['expedientes']=Expedientes::paginate("10");
+
+                $datos['configFiltro'] = "TODOS";
             break;
         }
 
@@ -98,14 +109,15 @@ class ExpedientesController extends Controller
         }
 
         $datos['configIdEmpleado'] = $id;
-        $datos['configFiltro'] = $estado;
+        $datos['configIdFiltro'] = $estado;
 
         return view('expedientes.index',$datos);
     }
 
-    public function consultar(Request $request){
-        $datosVista=request()->all();
-        return response()->json($datosVista);
+
+    public function atender($idEmp,$idExp)
+    {
+        echo "Hola ".$idEmp."MODIFICATE ESTA ".$idExp;
     }
 
     /**
