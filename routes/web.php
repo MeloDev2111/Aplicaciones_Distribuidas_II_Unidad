@@ -68,6 +68,7 @@ Route::view('/acerca','acerca')->name('Acerca');
 
 Route::get('/portafolio','PortafolioController@index')->name('Portafolio');
 
+Route::view('/expedientes','expedientes.index')->name('Expedientes');
 
 Route::view('/contactos','contactos')->name('Contactos');
 
@@ -78,7 +79,7 @@ Route::apiResource('proyectos','PortafolioController');
 
 Route::resource('empleados', 'EmpleadosController');
 
-Route::resource('oficinas', 'OficinasController');
+Route::resource('oficinas', 'OficinasController')->middleware(['auth']);
 /*
 Route::post();
 Route::put();

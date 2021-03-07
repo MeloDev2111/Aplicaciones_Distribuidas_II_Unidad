@@ -15,10 +15,10 @@ class CreateEmpleadosTable extends Migration
     {
         Schema::create('empleados', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idOficina');
+            $table->unsignedinteger('idOficina');
+            $table->foreign('idOficina')->references('id')->on('oficinas');
             $table->string('nombreEmp',50);
             $table->string('apellEmp',50);
-            $table->integer('idUsuario');
             $table->timestamps();
         });
 

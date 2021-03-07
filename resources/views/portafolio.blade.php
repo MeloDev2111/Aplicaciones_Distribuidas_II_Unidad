@@ -1,6 +1,3 @@
-@guest
-@else
-
 @extends('layout')
 
 @section('titulo')
@@ -108,7 +105,4 @@
             </tr>
         </tbody>
     </table>
-
-
 @endsection
-@endguest

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Empleados;
+use App\Oficinas;
 use Illuminate\Http\Request;
 
 class EmpleadosController extends Controller
@@ -14,7 +15,15 @@ class EmpleadosController extends Controller
      */
     public function index()
     {
-        return "Welcome mongol";
+        $datos['empleados']=Empleados::paginate("3");
+
+        foreach ($datos['empleados'] as $item) {
+            $oficina = Oficinas::find($item['idOficina']);
+            $newColumn = ['nombreOficina'=>$oficina['nombre']];
+            $item['nombreOficina'] = $oficina['nombre'];
+        }
+
+        return view('empleados.index',$datos);
     }
 
     /**
@@ -24,7 +33,9 @@ class EmpleadosController extends Controller
      */
     public function create()
     {
-        return view('empleados.create');
+        $datos['oficinas']=Oficinas::paginate();
+
+        return view('empleados.create',$datos);
     }
 
     /**
@@ -35,9 +46,21 @@ class EmpleadosController extends Controller
      */
     public function store(Request $request)
     {
-        $datosEmpleado=request()->all();
+        $datosVista=request()->all();
+        $datosEmpleado=[
+            //agregar DNI
+            'nombreEmp'=>$datosVista['Nombres'],
+            'apellEmp'=>$datosVista['Apellidos'],
+            'idOficina'=>$datosVista['idOficina']
+        ];
+        try {
+            Empleados::insert($datosEmpleado);
+            return redirect('empleados')->with('Mensaje','Agregado con exito');
+        } catch (\Throwable $th) {
+            return redirect('empleados')->with('Mensaje','Error al guardar');
+        }
 
-        return response()->json($datosEmpleado);
+        //return response()->json($datosOficina);
     }
 
     /**
@@ -57,9 +80,12 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empleados $empleados)
+    public function edit($id)
     {
-        //
+        $datos['empleado'] = Empleados::find($id);
+        $datos['oficinas'] = Oficinas::paginate();
+
+        return view('empleados.edit',$datos);
     }
 
     /**
@@ -69,9 +95,31 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empleados $empleados)
+    public function update(Request $request, $id)
     {
-        //
+        $campos =[
+            'Nombres'=>'required|string|max:10',
+            'Apellidos'=>'required|string|max:50',
+        ];
+
+        $Mensajes=["required"=>'El :atribute es requerido'];
+
+        $this->validate($request,$campos,$Mensajes);
+
+        $datosVista = request();
+
+        $datosEmpleado=[
+            //agregar DNI
+            'nombreEmp'=>$datosVista['Nombres'],
+            'apellEmp'=>$datosVista['Apellidos'],
+            'idOficina'=>$datosVista['idOficina']
+        ];
+        try {
+            Empleados::where('id','=',$id)->update($datosEmpleado);
+            return redirect('empleados')->with('Mensaje','modificada con exito');
+        } catch (\Throwable $th) {
+            return redirect('empleados')->with('Mensaje','Error al modificar');
+        }
     }
 
     /**
@@ -80,8 +128,13 @@ class EmpleadosController extends Controller
      * @param  \App\Empleados  $empleados
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empleados $empleados)
+    public function destroy($id)
     {
-        //
+        try {
+            Empleados::destroy($id);
+            return redirect('empleados')->with('Mensaje','Empleado eliminado con exito');
+        } catch (\Throwable $th) {
+            return redirect('empleados')->with('Mensaje','Error al Eliminar');
+        }
     }
 }
