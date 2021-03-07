@@ -11,7 +11,7 @@
             <div class ="col-md-8">
                 <h2>LISTA DE EMPLEADOS</h2>
             </div>
-            <div class ="col-md-2">
+            <div class ="col-md-3">
                 <a class="btn btn-success btn-md" href="{{url('/empleados/crear')}}">Crear Empleado</a>
             </div>
         </div>
