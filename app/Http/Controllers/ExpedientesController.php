@@ -20,7 +20,6 @@ class ExpedientesController extends Controller
 
         foreach ($datos['empleados'] as $item) {
             $oficina = Oficinas::find($item['idOficina']);
-            $newColumn = ['nombreOficina'=>$oficina['nombre']];
             $item['nombreOficina'] = $oficina['nombre'];
         }
 
@@ -60,7 +59,48 @@ class ExpedientesController extends Controller
      */
     public function show($id,$estado)
     {
-        echo "show ".$id." ".$estado;
+        $datos['empleados']=Empleados::paginate();
+
+        foreach ($datos['empleados'] as $item) {
+            $oficinaE = Oficinas::find($item['idOficina']);
+            $newColumn = ['nombreOficina'=>$oficinaE['nombre']];
+            $item['nombreOficina'] = $oficinaE['nombre'];
+            if ($item['id'] == $id) {
+                $oficinaActual = $oficinaE;
+            }
+        }
+
+        switch ($estado) {
+            case 'ENVIADOS':
+                $datos['expedientes']=Expedientes::where('idOficinaEmisora','=',$oficinaActual['id'])
+                ->whereNull('atencion')->paginate("10");
+                break;
+            case 'RECIBIDOS':
+                $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
+                ->whereNull('atencion')->paginate("10");
+                break;
+            case 'ATENDIDOS':
+                $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
+                ->orWhere('idOficinaEmisora','=',$oficinaActual['id'])->paginate("10");
+                break;
+            default:
+                $datos['expedientes']=Expedientes::paginate("10");
+            break;
+        }
+
+
+        foreach ($datos['expedientes'] as $item) {
+            $oficina = Oficinas::find($item['idOficinaEmisora']);
+            $item['nombreOficinaEmisora'] = $oficina['nombre'];
+
+            $oficina = Oficinas::find($item['idOficinaReceptora']);
+            $item['nombreOficinaReceptora'] = $oficina['nombre'];
+        }
+
+        $datos['configIdEmpleado'] = $id;
+        $datos['configFiltro'] = $estado;
+
+        return view('expedientes.index',$datos);
     }
 
     public function consultar(Request $request){

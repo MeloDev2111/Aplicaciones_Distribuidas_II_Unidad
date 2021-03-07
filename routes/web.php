@@ -82,7 +82,6 @@ Route::resource('empleados', 'EmpleadosController');
 Route::resource('expedientes', 'ExpedientesController');
 Route::get('expedientes/crear/{empleado_id}', 'ExpedientesController@create');
 Route::get('expedientes/{empleado_id}/{estado}', 'ExpedientesController@show');
-Route::post('expedientes/consultar/', 'ExpedientesController@consultar');
 /*
 Route::post();
 Route::put();
