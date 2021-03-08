@@ -187,7 +187,21 @@ class ExpedientesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $datos['oficinas'] = Oficinas::paginate();
+        $datos['expediente']  = Expedientes::where('nroRegistro','=',$id)->get()->toArray()[0];
+        switch ($datos['expediente']['tipo']) {
+            case 'Oficio':
+                $datos['expediente']['idTipo'] = '1';
+                break;
+            case 'Carta':
+                $datos['expediente']['idTipo'] = '2';
+                break;
+            default:
+                $datos['expediente']['idTipo'] = '3';
+                break;
+        }
+
+        return view('expedientes.edit',$datos);
     }
 
     /**
@@ -199,7 +213,35 @@ class ExpedientesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $datosVista=request()->all();
+
+        $datosExpediente=[
+            'idOficinaEmisora'=>$datosVista['idOficinaEmisora'],
+            'idOficinaReceptora'=>$datosVista['idOficinaReceptora'],
+            'descripcion'=>$datosVista['descripcion'],
+        ];
+
+        switch ($datosVista['tipo']) {
+            case '1':
+                $datosExpediente['tipo']="Oficio";
+                break;
+            case '2':
+                $datosExpediente['tipo'] ="Carta";
+                break;
+            default:
+                $datosExpediente['tipo']="No especificado";
+                break;
+        }
+
+        $expediente = Expedientes::where('nroRegistro','=',$id);
+
+        try {
+            $expediente->update($datosExpediente);
+            return redirect('expedientes')->with('Mensaje','Modificado con exito');
+        } catch (\Throwable $th) {
+            printf($th);
+            return redirect('expedientes')->with('Mensaje','Error al Modificar');
+        }
     }
 
     /**
