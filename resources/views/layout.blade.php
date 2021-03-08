@@ -42,11 +42,6 @@
                         </li>
 
                     @else
-                        <li class="nav-item">
-                            <a href="/proyectos" class="navbar-brand col fs-1 text-white">
-                                Portafolio
-                            </a>
-                        </li>
 
                         <li class="nav-item">
                             <a href="/oficinas" class="navbar-brand col fs-1 text-white">

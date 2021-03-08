@@ -34,10 +34,12 @@ class ExpedientesController extends Controller
     public function create($id)
     {
         $empleado = Empleados::find($id);
-        $oficina = Oficinas::find($empleado['idOficina']);
-        print($empleado);
-        print($oficina);
-        echo "Hola ".$id;
+        $datos['empleado'] = $empleado;
+        $datos['oficinaActual'] = Oficinas::find($empleado['idOficina']);
+
+        $datos['oficinas']=Oficinas::paginate();
+
+        return view('expedientes.create',$datos);
     }
 
     /**
@@ -48,7 +50,43 @@ class ExpedientesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $datosVista=request()->all();
+
+        $idEmpleado = $datosVista['idEmp'];
+
+        //switch de conversion int a String 1 - TIPO
+
+        $datosExpediente=[
+            'idOficinaEmisora'=>$datosVista['idOficinaEmisora'],
+            'idOficinaReceptora'=>$datosVista['idOficinaReceptora'],
+            'descripcion'=>$datosVista['descripcion'],
+        ];
+
+
+        switch ($datosVista['tipo']) {
+            case '1':
+                $datosExpediente['tipo']="Oficio";
+                break;
+            case '2':
+                $datosExpediente['tipo'] ="Carta";
+                break;
+            default:
+                $datosExpediente['tipo']="No especificado";
+                break;
+        }
+
+        $datosExpediente['fecha'] = now()->format('Y-m-d');;
+        $datosExpediente['hora'] = now()->format('H:i:s');;
+
+        try {
+            Expedientes::insert($datosExpediente);
+            return redirect('expedientes/'.$idEmpleado.'/1')->with('Mensaje','Emitido con exito');
+        } catch (\Throwable $th) {
+            return redirect('expediente')->with('Mensaje','Error al emitir');
+        }
+
+        //return response()->json($datosVista);
     }
 
     /**
@@ -73,27 +111,32 @@ class ExpedientesController extends Controller
         switch ($estado) {
             case '1':
                 $datos['expedientes']=Expedientes::where('idOficinaEmisora','=',$oficinaActual['id'])
-                ->whereNull('atencion')->paginate("10");
+                ->whereNull('atencion')->paginate("4");
 
                 $datos['configFiltro'] = "ENVIADOS";
                 break;
             case '2':
                 $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
-                ->whereNull('atencion')->paginate("10");
+                ->whereNull('atencion')->paginate("4");
 
 
                 $datos['configFiltro'] = "RECIBIDOS";
                 break;
             case '3':
-                $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
-                ->orWhere('idOficinaEmisora','=',$oficinaActual['id'])
-                ->whereNotNull('atencion')
-                ->paginate("10");
+                $idOfiActual = $oficinaActual['id'];
+                $datos['expedientes']=Expedientes::whereNotNull('atencion')
+                ->where(function($query) use($idOfiActual) {
+                    $query->where('idOficinaReceptora','=', $idOfiActual )
+                        ->orWhere('idOficinaEmisora','=', $idOfiActual );
+                })
+                ->paginate("4");
+
+
 
                 $datos['configFiltro'] = "ATENDIDOS";
                 break;
             default:
-                $datos['expedientes']=Expedientes::paginate("10");
+                $datos['expedientes']=Expedientes::paginate("4");
 
                 $datos['configFiltro'] = "TODOS";
             break;
@@ -117,7 +160,23 @@ class ExpedientesController extends Controller
 
     public function atender($idEmp,$idExp)
     {
-        echo "Hola ".$idEmp."MODIFICATE ESTA ".$idExp;
+        $empleado = Empleados::find($idEmp);
+
+        $expediente = Expedientes::where('nroRegistro','=',$idExp);
+
+        $apellido = $empleado['apellEmp'];
+        $nombres = $empleado['nombreEmp'];
+
+        try {
+            $expediente->update([
+                'atencion' => $apellido." ".$nombres,
+            ]);
+            //Expedientes::where('nroRegistro','=',$idExp)->update($expediente);
+            return redirect('expedientes/'.$idEmp.'/2')->with('Mensaje','Atendido con exito');
+        } catch (\Throwable $th) {
+            printf($th);
+            return redirect('expedientes')->with('Mensaje','Error al atender');
+        }
     }
 
     /**
@@ -151,6 +210,12 @@ class ExpedientesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $expediente = Expedientes::where('nroRegistro','=',$id);
+            $expediente->delete();
+            return redirect('expedientes')->with('Mensaje','Expediente eliminado con exito');
+        } catch (\Throwable $th) {
+            return redirect('expedientes')->with('Mensaje','Error al Eliminar');
+        }
     }
 }

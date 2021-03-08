@@ -17,12 +17,12 @@
         </div>
         <div class="mt-3">
             <table class = "table table-hover">
-                <thead class="table-primary">
+                <thead class="table-success">
                     <tr>
                         <th>id</th>
-                        <th>Oficina</th>
                         <th>Nombres</th>
                         <th>Apellidos</th>
+                        <th>Oficina</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

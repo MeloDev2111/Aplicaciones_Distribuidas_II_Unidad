@@ -14,7 +14,11 @@ class CreateExpedientesTable extends Migration
     public function up()
     {
         Schema::create('expedientes', function (Blueprint $table) {
-            $table->increments('id');
+            //para trabajar con un autoincrement como parte de la pk
+            $table->engine = 'MyISAM';
+            $table->date('fecha');
+            $table->time('hora');
+            $table->integer('nroRegistro',true,true);//name, autoincrement , unsigned
             $table->unsignedinteger('idOficinaEmisora');
             $table->foreign('idOficinaEmisora')->references('id')->on('oficinas');
             $table->unsignedinteger('idOficinaReceptora');
@@ -24,6 +28,8 @@ class CreateExpedientesTable extends Migration
             $table->string('atencion',110)->nullable();
             $table->timestamps();
         });
+        //pa evitar problemicas
+        DB::unprepared('ALTER TABLE `expedientes` DROP PRIMARY KEY, ADD PRIMARY KEY (  `fecha` ,  `nroRegistro` )');
     }
 
     /**

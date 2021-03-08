@@ -56,11 +56,13 @@
             <h2>LISTA DE EXPEDIENTES {{$configFiltro}}</h2>
             <div class="mt-3">
                 <table class = "table table-hover">
-                    <thead class="table-primary">
+                    <thead class="table-warning">
                         <tr>
-                            <th scope="col"> N° de registro</th>
-                            <th scope="col">Oficina Emisora</th>
-                            <th scope="col">Oficina Receptora</th>
+                            <th scope="col"> id Expediente</th>
+                            <th scope="col"> Hora</th>
+                            <th scope="col"> N° Reg</th>
+                            <th scope="col">Emisora</th>
+                            <th scope="col">Destino</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Atención</th>
@@ -71,7 +73,9 @@
 
                         @forelse ($expedientes as $item)
                         <tr>
-                            <td>{{$item -> id}}</td>
+                            <td>{{ date_format($item['fecha'], 'Y-m-d') }}-{{$item -> nroRegistro}}</td>
+                            <td>{{ date_format($item->hora, 'H:i:s') }}</td>
+                            <td>{{$item -> nroRegistro}}</td>
                             <td>{{$item -> nombreOficinaEmisora}}</td>
                             <td>{{$item -> nombreOficinaReceptora}}</td>
                             <td>{{$item -> tipo}}</td>
@@ -85,8 +89,8 @@
                             @switch($configFiltro)
                                 @case("ENVIADOS")
                                     <td>
-                                        <a class="btn btn-info btn-sm" href="{{url('/expedientes/'.$item->id.'/editar')}}">Editar</a>
-                                        <form action="{{url('/expedientes/'.$item->id)}}" method="post">
+                                        <a class="btn btn-info btn-sm" href="{{url('/expedientes/'.$item->nroRegistro.'/editar')}}">Editar</a>
+                                        <form action="{{url('/expedientes/'.$item->nroRegistro)}}" method="post">
                                             @csrf
                                             {{method_field('DELETE')}}
 
@@ -97,12 +101,12 @@
                                 @case("RECIBIDOS")
                                     <td>
                                         <a class="btn btn-success btn-sm" href='/expedientes/atender/'
-                                        onclick="location.href=this.href+obtenerIdEmpleado()+'/'+{{$item -> id}};return false;">Atender</a>
+                                        onclick="location.href=this.href+obtenerIdEmpleado()+'/'+{{$item -> nroRegistro}};return false;">Atender</a>
                                     </td>
                                     @break
                                 @case("ATENDIDOS")
                                     <td>
-                                        <form action="{{url('/expedientes/'.$item->id)}}" method="post">
+                                        <form action="{{url('/expedientes/'.$item->nroRegistro)}}" method="post">
                                             @csrf
                                             {{method_field('DELETE')}}
 

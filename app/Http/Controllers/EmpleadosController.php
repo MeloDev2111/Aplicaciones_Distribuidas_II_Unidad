@@ -15,7 +15,7 @@ class EmpleadosController extends Controller
      */
     public function index()
     {
-        $datos['empleados']=Empleados::paginate("3");
+        $datos['empleados']=Empleados::paginate("5");
 
         foreach ($datos['empleados'] as $item) {
             $oficina = Oficinas::find($item['idOficina']);
@@ -98,7 +98,7 @@ class EmpleadosController extends Controller
     public function update(Request $request, $id)
     {
         $campos =[
-            'Nombres'=>'required|string|max:10',
+            'Nombres'=>'required|string|max:50',
             'Apellidos'=>'required|string|max:50',
         ];
 

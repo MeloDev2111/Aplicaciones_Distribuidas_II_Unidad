@@ -16,14 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::view('/','inicio')->name('Index');
 Route::view('/acerca','acerca')->name('Acerca');
 
-Route::get('/portafolio','PortafolioController@index')->name('Portafolio');
-
-Route::view('/contactos','contactos')->name('Contactos');
-
 //Route::resource('proyectos','PortafolioController')->only(['index','show']);
 //Except es el inverso de only
-//Route::resource('proyectos','PortafolioController');
-Route::apiResource('proyectos','PortafolioController');
 
 Route::resource('oficinas', 'OficinasController')->middleware(['auth']);
 
