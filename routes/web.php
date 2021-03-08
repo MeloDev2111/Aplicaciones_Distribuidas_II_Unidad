@@ -18,12 +18,12 @@ Route::view('/acerca','acerca')->name('Acerca');
 
 Route::resource('oficinas', 'OficinasController')->middleware(['auth']);
 
-Route::resource('empleados', 'EmpleadosController');
+Route::resource('empleados', 'EmpleadosController')->middleware(['auth']);
 
-Route::resource('expedientes', 'ExpedientesController');
-Route::get('expedientes/crear/{empleado_id}', 'ExpedientesController@create');
-Route::get('expedientes/{empleado_id}/{estado}', 'ExpedientesController@show');
-Route::get('expedientes/atender/{empleado_id}/{expediente_id}', 'ExpedientesController@atender');
+Route::resource('expedientes', 'ExpedientesController')->middleware(['auth']);
+Route::get('expedientes/crear/{empleado_id}', 'ExpedientesController@create')->middleware(['auth']);
+Route::get('expedientes/{empleado_id}/{estado}', 'ExpedientesController@show')->middleware(['auth']);
+Route::get('expedientes/atender/{empleado_id}/{expediente_id}', 'ExpedientesController@atender')->middleware(['auth']);
 /*
 Route::post();
 Route::put();
