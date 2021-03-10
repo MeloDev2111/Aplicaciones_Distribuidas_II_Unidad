@@ -47,8 +47,7 @@
                     <select class="h4" name="tipo" id="Tipo">
                         <option value="1">Oficio</option>
                         <option value="2">Carta</option>
-                        <option value='3'></option>
-                        <option value="4"></option>
+                        <option value='3'>No especificado</option>
                     </select>
                 </div>
             </div>

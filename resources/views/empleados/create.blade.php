@@ -5,11 +5,6 @@
             @csrf
 
             <div class="form-group h2 row">
-                <span class="col-md-3" >DNI:</span>
-                <input class="col-md-6" type="number" name="DNI" autocomplete="DNI" max="99999999" min="10000000" required/>
-            </div>
-
-            <div class="form-group h2 row">
                 <label class="col-md-3" for="Nombres" >{{ 'Nombres' }} </label>
                 <input class="col-md-6" type="text" name="Nombres" id="Nombres" autocomplete="first-name" required
                 maxlength="50"/>
