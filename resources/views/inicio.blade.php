@@ -2,14 +2,15 @@
 @section('titulo')
     Inicio
 @endsection
-@guest
-    @extends('infoEquipo')
-@else
+@auth
     @section('contenido')
-        <h1>@lang('Bienvenido a Inicio')</h1>
-        @auth
-        <h3 class="text-primary">{{ auth()->user()->name }}</h3>
-        @endauth
+        <div style="width:100%;height: 60%; display: flex; justify-content: center; align-items: center">
+            <h1 class="shadow p-3 bg-body rounded text-center"> @lang('Bienvenido')
+                <div class="text-primary">{{ auth()->user()->name }}</div></h1>
+        </div>
     @endsection
-@endguest
+@else
+    @extends('infoEquipo')
+@endauth
+
 

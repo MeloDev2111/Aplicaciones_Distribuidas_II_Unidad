@@ -31,6 +31,6 @@ Route::patch();
 Route::delete();
 */
 
-//Auth::routes(['register'=>false]);
-Auth::routes();
+Auth::routes(['forgot'=>false]);
+//Auth::routes();
 

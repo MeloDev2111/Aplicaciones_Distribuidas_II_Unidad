@@ -111,13 +111,13 @@ class ExpedientesController extends Controller
         switch ($estado) {
             case '1':
                 $datos['expedientes']=Expedientes::where('idOficinaEmisora','=',$oficinaActual['id'])
-                ->whereNull('atencion')->paginate("4");
+                ->whereNull('atencion')->paginate();
 
                 $datos['configFiltro'] = "ENVIADOS";
                 break;
             case '2':
                 $datos['expedientes']=Expedientes::where('idOficinaReceptora','=',$oficinaActual['id'])
-                ->whereNull('atencion')->paginate("4");
+                ->whereNull('atencion')->paginate();
 
 
                 $datos['configFiltro'] = "RECIBIDOS";
@@ -129,14 +129,12 @@ class ExpedientesController extends Controller
                     $query->where('idOficinaReceptora','=', $idOfiActual )
                         ->orWhere('idOficinaEmisora','=', $idOfiActual );
                 })
-                ->paginate("4");
-
-
+                ->paginate();
 
                 $datos['configFiltro'] = "ATENDIDOS";
                 break;
             default:
-                $datos['expedientes']=Expedientes::paginate("4");
+                $datos['expedientes']=Expedientes::paginate();
 
                 $datos['configFiltro'] = "TODOS";
             break;

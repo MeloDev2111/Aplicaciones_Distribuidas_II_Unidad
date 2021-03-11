@@ -66,7 +66,7 @@
                             <th scope="col">Tipo</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Atención</th>
-                            <th scope="col">Acciones</th>
+                            <th scope="col" id="Borrable">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +115,9 @@
                                     </td>
                                     @break
                                 @default
-
+                                    <script>
+                                        document.getElementById("Borrable").style.display="none";
+                                    </script>
                             @endswitch
 
                         </tr>
