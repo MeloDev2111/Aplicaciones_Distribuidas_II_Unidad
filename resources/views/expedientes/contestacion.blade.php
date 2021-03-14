@@ -11,10 +11,11 @@
 @endif
 
     <div class = "card card-body">
-        <form action="{{ url('/expedientes/'.$expediente['nroRegistro']) }}" method="POST">
+        <form action="{{ url('/expedientes/contestar'.$expediente['nroRegistro']) }}" method="POST">
             @csrf
             {{method_field('PATCH')}}
 
+            <input type="hidden" name="idEmp" value="{{$empleado->id}}">
             <div class="form-group h2 row">
                 <label class="col-md-3" for="OficinaEmisora" >{{ __('Emisor') }}</label>
 
@@ -27,7 +28,7 @@
                         @endforelse
                     </select>
                     <script>
-                        document.ready = document.getElementById("OficinaEmisora").value="{{ $expediente['idOficinaEmisora'] }}";
+                        document.ready = document.getElementById("OficinaEmisora").value="{{ $expediente['idOficinaReceptora'] }}";
                     </script>
                 </div>
 
@@ -37,18 +38,16 @@
                 <label class="col-md-3" for="OficinaReceptora" >{{ __('Receptor') }}</label>
 
                 <div class="col-md-6">
-                    <select class="form-control" name="idOficinaReceptora" id="OficinaReceptora">
+                    <select class="form-control" name="idOficinaReceptora" id="OficinaReceptora" style="pointer-events: none;" READONLY>
                         @forelse ($oficinas as $item)
-                            @if ($item['id']!=$expediente['idOficinaEmisora'])
-                                <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nombre'] }}</option>
-                            @endif
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nombre'] }}</option>
                         @empty
                             Oficinas no Registradas
                         @endforelse
                     </select>
                 </div>
                 <script>
-                    document.ready = document.getElementById("OficinaReceptora").value="{{ $expediente['idOficinaReceptora'] }}";
+                    document.ready = document.getElementById("OficinaReceptora").value="{{ $expediente['idOficinaEmisora'] }}";
                 </script>
             </div>
 
@@ -62,26 +61,21 @@
                         <option value='3'>No especificado</option>
                     </select>
                 </div>
-                <script>
-                    document.ready = document.getElementById("Tipo").value="{{ $expediente['idTipo'] }}";
-                </script>
             </div>
 
             <div class="form-group h2 row">
                 <label class="col-md-3" for="Asunto">{{ 'Asunto' }} </label>
-                <input class="col-md-6 h5" name="asunto" type="text" maxlength="150"
-                value="{{ $expediente['asunto'] }}"/><br>
+                <input class="col-md-6 h5" name="asunto" type="text" maxlength="150"/><br>
             </div>
 
             <div class="form-group h2 row">
                 <label class="col-md-3" for="Descripcion">{{ 'Descr.' }} </label>
                 <textarea class="col-md-6 h5" name="descripcion" id="Descripcion" autocomplete="description"
-                placeholder="Ingresa una descripcion del expediente" maxlength="250" rows="4"
-                >{{$expediente['descripcion']}}</textarea>
+                placeholder="Ingresa una descripcion del expediente" maxlength="250" rows="4"></textarea>
             </div>
 
             <div class="form-group">
-                <input class="btn btn-warning btn-lg" type="submit" value="Actualizar"/><br>
+                <input class="btn btn-warning btn-lg" type="submit" value="Contestar"/><br>
             </div>
 
         </form>

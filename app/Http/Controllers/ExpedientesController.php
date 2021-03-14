@@ -60,6 +60,7 @@ class ExpedientesController extends Controller
         $datosExpediente=[
             'idOficinaEmisora'=>$datosVista['idOficinaEmisora'],
             'idOficinaReceptora'=>$datosVista['idOficinaReceptora'],
+            'asunto'=>$datosVista['asunto'],
             'descripcion'=>$datosVista['descripcion'],
         ];
 
@@ -83,7 +84,8 @@ class ExpedientesController extends Controller
             Expedientes::insert($datosExpediente);
             return redirect('expedientes/'.$idEmpleado.'/1')->with('Mensaje','Emitido con exito');
         } catch (\Throwable $th) {
-            return redirect('expediente')->with('Mensaje','Error al emitir');
+            print($th);
+            //return redirect('expedientes')->with('Mensaje','Error al emitir');
         }
 
         //return response()->json($datosVista);
@@ -101,7 +103,6 @@ class ExpedientesController extends Controller
 
         foreach ($datos['empleados'] as $item) {
             $oficinaE = Oficinas::find($item['idOficina']);
-            $newColumn = ['nombreOficina'=>$oficinaE['nombre']];
             $item['nombreOficina'] = $oficinaE['nombre'];
             if ($item['id'] == $id) {
                 $oficinaActual = $oficinaE;
@@ -147,34 +148,18 @@ class ExpedientesController extends Controller
 
             $oficina = Oficinas::find($item['idOficinaReceptora']);
             $item['nombreOficinaReceptora'] = $oficina['nombre'];
+
+            $item['asuntoContestacion']="Sin Contestacion";
+            if (isset($item['idContestacion'])) {
+                $contestacion = Expedientes::where('nroRegistro','=',$item['idContestacion']);
+                $item['asuntoContestacion'] = $contestacion['asunto'];
+            }
         }
 
         $datos['configIdEmpleado'] = $id;
         $datos['configIdFiltro'] = $estado;
 
         return view('expedientes.index',$datos);
-    }
-
-
-    public function atender($idEmp,$idExp)
-    {
-        $empleado = Empleados::find($idEmp);
-
-        $expediente = Expedientes::where('nroRegistro','=',$idExp);
-
-        $apellido = $empleado['apellEmp'];
-        $nombres = $empleado['nombreEmp'];
-
-        try {
-            $expediente->update([
-                'atencion' => $apellido." ".$nombres,
-            ]);
-            //Expedientes::where('nroRegistro','=',$idExp)->update($expediente);
-            return redirect('expedientes/'.$idEmp.'/2')->with('Mensaje','Atendido con exito');
-        } catch (\Throwable $th) {
-            printf($th);
-            return redirect('expedientes')->with('Mensaje','Error al atender');
-        }
     }
 
     /**
@@ -216,6 +201,7 @@ class ExpedientesController extends Controller
         $datosExpediente=[
             'idOficinaEmisora'=>$datosVista['idOficinaEmisora'],
             'idOficinaReceptora'=>$datosVista['idOficinaReceptora'],
+            'asunto'=>$datosVista['asunto'],
             'descripcion'=>$datosVista['descripcion'],
         ];
 
@@ -240,6 +226,45 @@ class ExpedientesController extends Controller
             printf($th);
             return redirect('expedientes')->with('Mensaje','Error al Modificar');
         }
+    }
+
+    public function atender($idEmp,$idExp)
+    {
+        $empleado = Empleados::find($idEmp);
+
+        $expediente = Expedientes::where('nroRegistro','=',$idExp);
+
+        $apellido = $empleado['apellEmp'];
+        $nombres = $empleado['nombreEmp'];
+
+        try {
+            $expediente->update([
+                'atencion' => $apellido." ".$nombres,
+            ]);
+            //Expedientes::where('nroRegistro','=',$idExp)->update($expediente);
+            return redirect('expedientes/'.$idEmp.'/2')->with('Mensaje','Atendido con exito');
+        } catch (\Throwable $th) {
+            printf($th);
+            return redirect('expedientes')->with('Mensaje','Error al atender');
+        }
+    }
+
+    public function contestacion($idEmp,$idExp)
+    {
+        $empleado = Empleados::find($idEmp);
+        $datos['empleado'] = $empleado;
+
+        $expediente = Expedientes::where('nroRegistro','=',$idExp);
+        $datos['expedientes'] = $expediente;
+
+        $datos['oficinas']=Oficinas::paginate();
+
+        return view('expedientes.contestacion',$datos);
+    }
+
+    public function contestar(Request $request, $id)
+    {
+
     }
 
     /**

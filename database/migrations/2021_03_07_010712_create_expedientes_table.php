@@ -24,8 +24,11 @@ class CreateExpedientesTable extends Migration
             $table->unsignedinteger('idOficinaReceptora');
             $table->foreign('idOficinaReceptora')->references('id')->on('oficinas');
             $table->string('tipo',30);
+            $table->string('asunto',150);
             $table->text('descripcion')->nullable();
             $table->string('atencion',110)->nullable();
+            $table->unsignedinteger('idContestacion')->nullable();
+            $table->foreign('idContestacion')->references('nroRegistro')->on('Expediente');
             $table->timestamps();
         });
         //pa evitar problemicas

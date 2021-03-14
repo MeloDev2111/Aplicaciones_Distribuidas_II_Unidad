@@ -24,6 +24,9 @@ Route::resource('expedientes', 'ExpedientesController')->middleware(['auth']);
 Route::get('expedientes/crear/{empleado_id}', 'ExpedientesController@create')->middleware(['auth']);
 Route::get('expedientes/{empleado_id}/{estado}', 'ExpedientesController@show')->middleware(['auth']);
 Route::get('expedientes/atender/{empleado_id}/{expediente_id}', 'ExpedientesController@atender')->middleware(['auth']);
+
+Route::get('contestacion/{empleadoCont_id}/{expedienteCont_id}', 'ExpedientesController@contestacion')->middleware(['auth']);
+Route::post('expedientes/contestar/', 'ExpedientesController@contestar')->middleware(['auth']);
 /*
 Route::post();
 Route::put();

@@ -7,6 +7,16 @@
             <input type="hidden" name="idEmp" value="{{$empleado->id}}">
 
             <div class="form-group h2 row">
+                <label class="col-md-3" for="Fecha">{{ 'Fecha' }} </label>
+                <input class="col-md-6 h5" name="fecha" type="date" id="Fecha" readonly/><br>
+            </div>
+            <script>
+                var f = new Date();
+                var currentDate = f.toISOString().slice(0,10);
+                document.getElementById("Fecha").value= currentDate;
+            </script>
+
+            <div class="form-group h2 row">
                 <label class="col-md-3" for="OficinaEmisora" >{{ __('Emisor') }}</label>
 
                 <div class="col-md-6">
@@ -53,8 +63,8 @@
             </div>
 
             <div class="form-group h2 row">
-                <label class="col-md-3" for="Expediente">{{ 'Exp.' }} </label>
-                <input class="col-md-6 h5" name="exp" type="file"/><br>
+                <label class="col-md-3" for="Asunto">{{ 'Asunto' }} </label>
+                <input class="col-md-6 h5" name="asunto" type="text" maxlength="150"/><br>
             </div>
 
             <div class="form-group h2 row">

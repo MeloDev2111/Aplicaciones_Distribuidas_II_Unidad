@@ -66,6 +66,7 @@
                             <th scope="col">Tipo</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Atención</th>
+                            <th scope="col">Contestacion</th>
                             <th scope="col" id="Borrable">Acciones</th>
                         </tr>
                     </thead>
@@ -82,8 +83,10 @@
                             <td>{{$item -> descripcion}}</td>
                             @isset($item['atencion'])
                                 <td>{{$item -> atencion}}</td>
+                                <td>{{ $item->idContestacion }}-{{ $item->asuntoContestacion }}</td>
                             @else
-                                <td>Sin atender</td>
+                                <td>Sin Atender</td>
+                                <td>Sin Contestacion</td>
                             @endisset
 
                             @switch($configFiltro)
@@ -126,7 +129,6 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{$expedientes->links()}}
             </div>
 
         @else
